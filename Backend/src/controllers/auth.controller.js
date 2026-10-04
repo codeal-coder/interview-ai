@@ -19,7 +19,7 @@ async function registerUserController(req, res) {
     }
 
     const isUserAlreadyExists = await userModel.findOne({
-        $or: [ { username }, { email } ]
+        $or: [{ username }, { email }]
     })
 
     if (isUserAlreadyExists) {
@@ -129,15 +129,22 @@ async function getMeController(req, res) {
     const user = await userModel.findById(req.user.id)
 
 
-
-    res.status(200).json({
-        message: "User details fetched successfully",
-        user: {
-            id: user._id,
-            username: user.username,
-            email: user.email
-        }
-    })
+    if (user) {
+        res.status(200).json({
+            message: "User details fetched successfully",
+            user: {
+                id: user._id,
+                username: user.username,
+                email: user.email
+            }
+        })
+    }
+    else {
+        res.status(200).json({
+            message: "User details fetched successfully",
+            user: ""
+        })
+    }
 
 }
 
